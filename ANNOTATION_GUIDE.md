@@ -16,6 +16,11 @@ For each segment:
 5. Set `review_status` to `keep` or `exclude`; note music, overlap, unclear
    speech, or uncertainty in `notes`.
 
+If working alone, use one annotator file and describe the labels as
+single-annotator annotations. If practical, revisit a random subset after a
+few days without looking at your earlier labels and report self-agreement as a
+consistency check. This does not replace independent annotators.
+
 Allowed labels:
 
 ```text

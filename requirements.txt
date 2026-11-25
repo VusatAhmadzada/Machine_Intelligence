@@ -13,4 +13,5 @@ jupyter
 nbformat
 requests
 webrtcvad-wheels
+ipywidgets
 

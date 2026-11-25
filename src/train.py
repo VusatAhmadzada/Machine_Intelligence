@@ -54,6 +54,29 @@ def load_ravdess(root: Path) -> pd.DataFrame:
     return frame
 
 
+def resolve_manifest_filepath(
+    value: str,
+    manifest_path: Path,
+    language: str,
+    project_root: Path | None = None,
+) -> str:
+    audio_path = Path(value)
+    if audio_path.is_absolute():
+        return str(audio_path)
+
+    manifest_relative_path = manifest_path.parent / audio_path
+    if manifest_relative_path.exists() or audio_path.name != str(audio_path):
+        return str(manifest_relative_path)
+
+    root = project_root or Path(__file__).resolve().parents[1]
+    source_relative_path = (
+        root / "data" / "raw" / language / "source" / audio_path.name
+    )
+    if source_relative_path.exists():
+        return str(source_relative_path)
+    return str(manifest_relative_path)
+
+
 def load_manifest(path: Path) -> pd.DataFrame:
     frame = pd.read_csv(path)
     required = {"filepath", "label", "speaker_id"}
@@ -80,9 +103,11 @@ def load_manifest(path: Path) -> pd.DataFrame:
     if frame["speaker_id"].isna().any() or frame["speaker_id"].eq("").any():
         raise ValueError("Every labeled row must have a speaker_id")
     frame["filepath"] = frame["filepath"].map(
-        lambda value: str(path.parent / value)
-        if not Path(value).is_absolute()
-        else value
+        lambda value: resolve_manifest_filepath(
+            value,
+            path,
+            path.parent.name,
+        )
     )
     invalid = set(frame["label"].unique()) - set(SHARED_LABELS)
     if invalid:

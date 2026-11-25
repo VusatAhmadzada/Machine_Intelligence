@@ -65,11 +65,36 @@ verified speech or emotion labels. Review them and fill `speaker_id`,
 `label_annotator_1`, `label_annotator_2`, and the adjudicated `label`. See
 [ANNOTATION_GUIDE.md](ANNOTATION_GUIDE.md).
 
+You do not need to hand-edit all 300 rows. A 50-segment time-spread pilot and
+audio-player notebook are provided:
+
+```powershell
+python src/create_annotation_pilot.py
+jupyter notebook notebooks/Annotate_Qaynana_Pilot.ipynb
+```
+
+In the notebook, set `annotator_id` to your own short name. If working alone,
+one annotator is enough for the pilot; note this limitation in the report.
+Listen to each segment, assign a stable speaker ID when possible, choose a
+label, and review the segment. Changes are autosaved when you edit a field or
+move to another segment; **Save** is also available for an explicit save. The
+output is written to `data/processed/azerbaijani/labels_<annotator>.csv`.
+The notebook also displays a live table of all segments and their current
+saved labels below the audio player.
+To check your own
+consistency, optionally relabel a small random subset later without looking
+at your first labels.
+
+The manifest's `filepath` is just `Qaynana_1978_filmi.wav`; the loader resolves
+the basename from `data/raw/azerbaijani/source/`.
+
 Train after labels and speaker IDs are reviewed:
 
 ```powershell
-python src/train.py --language azerbaijani --manifest data/processed/azerbaijani/qaynana_segments.csv
+python src/train.py --language azerbaijani --manifest data/processed/azerbaijani/labels_annotator_1.csv
 ```
+
+Replace `annotator_1` with the annotator ID used for your CSV.
 
 After both datasets have reviewed labels, run cross-language evaluation in
 both directions:
