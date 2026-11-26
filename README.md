@@ -21,10 +21,10 @@ supported without a human-annotated conversation definition.
 
 ## Setup
 
-From PowerShell:
+Open PowerShell in the cloned repository root (the folder containing
+`requirements.txt`), then run:
 
 ```powershell
-cd "C:\Users\mstwn\Desktop\TEST\Machine Intelligence project"
 py -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
@@ -50,6 +50,11 @@ The pilot WAV is kept locally at:
 ```text
 data/raw/azerbaijani/source/Qaynana_1978_filmi.wav
 ```
+
+The movie WAV and annotation CSVs are not included in the repository. The
+Azerbaijani run is reproducible only when you have authorized access to the
+audio and the corresponding labeled manifest. Without those files, use the
+English RAVDESS benchmark for the demonstration.
 
 Generate candidate speech timestamps and an annotation manifest:
 
